@@ -1,0 +1,82 @@
+body { background-color: white;}
+#start {
+    width: 140px;
+    height: 44px;
+    background-color:rgb(83, 169, 255) ;
+    color: white;
+    box-shadow: 0 4px 16px rgba(19, 84, 223, 0.3);
+    font-size: 15.4px;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    position: absolute;
+    top: 70%;
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    transition: 0.15s;
+}
+button :focus{
+    outline: 0;
+}
+
+button:hover{
+    background-color: rgba(131, 191, 252, 0.8);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(131, 191, 252, 0.6);
+}
+
+#output{
+    font-size: 20px;
+    font-weight: bolder;
+    text-align: center;
+}
+#ch1{ 
+    width: 260px;
+    height: 65px;
+    background-color: #eeb4ff;
+    color:black;
+    font-size: 15.4px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    top:12%;
+    left:50%;
+    transition: 0.15s;
+    transform: translate(-50%, -50%); 
+    box-shadow: 0 4px 16px rgba(156, 69, 190, 0.3); 
+    position: absolute; 
+}
+
+#ch2{
+    width: 260px;
+    height: 65px;
+    background-color: #eeb4ff;
+    color:rgb(0, 0, 0);
+    font-size: 15.4px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    top:23%;
+    left:50%;
+    transition: 0.15s;
+    transform: translate(-50%, -50%); 
+    box-shadow: 0 4px 16px rgba(156, 69, 190, 0.3); 
+    position: absolute; 
+}
+
+#ch3{
+    width: 260px;
+    height: 65px;
+    background-color: #eeb4ff;
+    color:rgb(0, 0, 0);
+    font-size: 15.4px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    top:34%;
+    left:50%;
+    transition: 0.15s;
+    transform: translate(-50%, -50%); 
+    box-shadow: 0 4px 16px rgba(156, 69, 190, 0.3); 
+    position: absolute; 
+}

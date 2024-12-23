@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>나와 닮은 애니 캐릭터는 누구일까? 애니 캐릭터 심리테스트!</title>
+        <link rel="stylesheet" href="style.css">
+        <style>
+
+            #st {
+                position: absolute;
+            top: 3%;
+            left: 0;
+            width: 90%;
+            height: 90%;
+            object-fit: cover;
+            z-index: -1;
+            }
+        </style>          
+    </head>
+    <body>
+        <button id="start">테스트 시작하기</button>
+        <div id="output"></div>
+        <div id="1"></div>
+        <div id="2"></div>
+        <div id="3"></div>
+        <div id="sel"></div>
+        <img id="st" src="images/st.png" alt="시작화면">
+        <script>
+        
+            const questions = [
+                "나는 연말에 할 일이 생기면",
+                "친한 친구가 연애문제로 울고 있다. 친구가 나에게 상황 설명을 해주었는데... 이때 나의 선택은?",
+                "원래 잡혀있던 약속이 1시간 전에 취소가 되었다. 나는 준비가 다 된 상태인데... 이때 나의 행동은?",
+                "가게에서 떡볶이를 시켰는데 주문한 것과 다른게 나왔다. 가게는 바빠 보이는데...그때 나의 반응은?",
+                "친구가 나에게 화난것 같다. 내가 말을 걸어도 떨떠름하고 잘 반응해주지 않는데.. 그때 나는",
+                "꿈에서만 그리던 직장에 들어가게 되었다. 하지만 사수가",
+                "새로 이사온 윗집이 너무 시끄럽다. 날이 밝을때는 어느정도 이해할 수 있지만 밤이 되어도 계속 그러는데..어떻게 할까?",
+                "이사를 하게되서 이제부터는 학교에서 집까지 버스를 타고 가야되는데...",
+                "몇달동안 원했던 옷/물건이 계속 품절 상태인데...",
+                "친구 남친이 다른 여자와 있는것을 보았다. 친구가 남자친구를 너무 좋아해서 말해줘도 헤어지지 않을 것 같은데...말해줘야 할까?"
+            ];
+
+            const c1 = [
+                "미리 해치우고 연말에 즐겁게 논다", 
+                "별로 공감되지 않지만 해결책을 알려준다", 
+                "기뻐하며 집에서 쉰다",
+                "사장님께 말씀드린다", 
+                "먼저 다가올때까지 기다려본다", 
+                "일은 잘하지만 성격이 나쁘다",
+                "윗집으로 올라가 얘기한다",
+                "5분 기다리고 만원 버스타기",
+                "더 기다려본다",
+                "말해준다" 
+            ];
+
+            const c2 =[ 
+                "일단 미루고 마감시간 3시간 전부터 시작한다", 
+                "친구의 감정에 공감하며 같이 슬퍼해준다", 
+                "아쉽지만 혼자서라도 나간다", 
+                "그냥 먹는다",
+                "바로 물어본다", 
+                "일은 못하지만 사람은 착하다", 
+                "경비실에 얘기한다", 
+                "30분 기다리고 자리 널널한 버스 타기",
+                "중고를 찾아본다",
+                "말해주지 않는다"
+            ];
+
+            const c3 = [
+                0, 0, 0, "리뷰 별점을 낮게 준다", "시간을 조금 가지고 조심히 얘기해본다", 0, 0, "그냥 택시타기", 0, "친구 대신 응징한다"
+            ];
+
+            const scores = {
+                "코": 0,
+                "징": 0,
+                "원": 0,
+                "자": 0,
+                "짱": 0,
+                "아": 0,
+                "감": 0,
+                "도": 0
+            };
+
+            const scoreMap = [
+                { 1: ["코", "징", "원", "자"], 2: ["짱", "아", "감", "도"] },
+                { 1: ["코", "징", "원"], 2: ["짱", "자", "도", "감"] },
+                { 1: ["징", "원", "아"], 2: ["짱", "자", "도", "감", "코"] },
+                { 1: ["짱", "코", "자"], 2: ["도", "감", "원", "아"], 3: ["징"] },
+                { 1: ["자", "징"], 2: ["감", "코", "짱", "원"], 3: ["도", "아"] },
+                { 1: ["코", "징", "원"], 2: ["감", "아", "자", "도", "짱"] },
+                { 1: ["코", "짱", "원", "감", "자"], 2: ["도", "아", "징"] },
+                { 1: ["자", "짱", "감"], 2: ["징", "도", "아"], 3: ["코", "원"] },
+                { 1: ["짱", "자", "아"], 2: ["도", "징", "감", "원", "코"] },
+                { 1: ["짱", "코", "도"], 2: ["징", "감", "아"], 3: ["자", "원"] }
+            ];
+
+            let n = 0;
+
+            document.querySelector('button').addEventListener('click', function() {
+                document.getElementById("start").remove();
+                document.getElementById("st").remove();
+                displayq(n);
+                displayc(n); 
+            });
+
+            function displayq(index) {
+                const a = questions[index];
+                const outputDiv = document.getElementById("output");
+                outputDiv.textContent = a;
+            }      
+
+            function displayc(index) {
+                const ch1div = document.getElementById("1");
+                const ch2div = document.getElementById("2");
+                const ch3div = document.getElementById("3");
+                const seldiv = document.getElementById("sel");
+
+                ch1div.innerHTML = '';
+                ch2div.innerHTML = '';
+                ch3div.innerHTML = '';
+                seldiv.textContent = '';
+
+                if (c1[index]) {
+                    const btn1 = document.createElement("button");
+                    btn1.id = 'ch1';
+                    btn1.textContent = c1[index];
+                    btn1.onclick = () => {
+                        seldiv.textContent = `선택: ${c1[index]}`;
+                        updateScore(1);
+                        nextQuestion();  
+                    };
+                    ch1div.appendChild(btn1);
+                }
+                if (c2[index]) {
+                    const btn2 = document.createElement("button");
+                    btn2.id = 'ch2';
+                    btn2.textContent = c2[index];
+                    btn2.onclick = () => {
+                        seldiv.textContent = `선택: ${c2[index]}`;
+                        updateScore(2);
+                        nextQuestion();
+                    };
+                    ch2div.appendChild(btn2);
+                }
+                if (c3[index] !== 0) {
+                    const btn3 = document.createElement("button");
+                    btn3.id = 'ch3';
+                    btn3.textContent = c3[index];
+                    btn3.onclick = () => {
+                        seldiv.textContent = `선택: ${c3[index]}`;
+                        updateScore(3);
+                        nextQuestion();  
+                    };
+                    ch3div.appendChild(btn3);
+                }
+            }
+
+            function updateScore(choice) {
+                let selectedScores;
+                
+                if (choice === 1) selectedScores = scoreMap[n][1];
+                else if (choice === 2) selectedScores = scoreMap[n][2];
+                else if (choice === 3) selectedScores = scoreMap[n][3];
+
+                if (selectedScores) {
+                    selectedScores.forEach(character => {
+                        scores[character]++;
+                    });
+                }
+            }
+
+            function nextQuestion() {
+                n++;
+                if (n < questions.length) {
+                    displayq(n);
+                    displayc(n);
+                } else {
+                    document.getElementById("output").textContent = "심리테스트가 종료되었습니다!";
+                    displayResult();
+                }
+            }
+
+            function displayResult() {
+                let maxScore = -1;
+                let resultCharacter = '';
+                
+                for (let character in scores) {
+                    if (scores[character] > maxScore) {
+                        maxScore = scores[character];
+                        resultCharacter = character;
+                    }
+                }
+
+                if (resultCharacter) {
+                    fetch(`${resultCharacter}.html`)
+                    .then(response => response.text())
+                    .then(data => {
+                        document.body.innerHTML=data;
+                    })
+                    .catch(err => {
+                        document.body.innerHTML = `<h1>오류가 발생했습니다!</h1><p>$err.message</p>`;
+                    });
+                }
+                document.getElementById("sel").textContent = `최종 캐릭터: ${resultCharacter}`;
+                
+            }
+
+        </script>
+    </body>
+</html>
